@@ -1,10 +1,10 @@
-import Head from 'next/head';
+import Navigation from './Navigation';
+import { Fragment } from 'react';
 
 export default function Header() {
 	return (
-		<Head>
-			<title>Create Next App</title>
-			<link rel="icon" href="/favicon.ico" />
-		</Head>
+		<Fragment>
+			<Navigation />
+		</Fragment>
 	);
 }
