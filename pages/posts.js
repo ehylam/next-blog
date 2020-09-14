@@ -1,28 +1,35 @@
-import React, { Component, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Layout from '../templates/layout';
+import Post from '../components/Post';
 const Posts = () => {
-	var [useData, setData] = useState();
+	var [wpData, setData] = useState([]);
 
-	const data = fetch('http://localhost:8888/tailwind/wp-json/wp/v2/posts')
-		.then(function(res) {
-			if (res !== 200) {
-				console.log('No data found');
-				return;
-			}
-
-			res.json().then(function(data) {
-				console.log(data);
-				setData(data);
-			});
-		})
-		.catch(function(err) {
-			console.log(err);
-		});
+	useEffect(() => {
+		const getData = async () => {
+			const api = 'http://localhost:8888/tailwind/wp-json/wp/v2/posts';
+			const res = await fetch(api);
+			const data = await res.json();
+			setData(data);
+		};
+		getData();
+	}, []);
+	console.log(wpData);
 
 	return (
 		<Layout>
-			<h1 />
+			{wpData.map(data => {
+				return (
+					<Post
+						key={data.id}
+						date={data.date}
+						title={data.title.rendered}
+						excerpt={data.excerpt.rendered}
+						content={data.content.rendered}
+						isPublished={data.status}
+					/>
+				);
+			})}
 		</Layout>
 	);
 };
